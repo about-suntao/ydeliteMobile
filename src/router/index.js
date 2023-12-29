@@ -5,7 +5,11 @@ import { createRouter, createWebHistory } from 'vue-router'
 const routes = [
     {
         path: '/',
-        name: 'Home',
+        redirect: '/eliteRegistration',
+    },
+    {
+        path: '/eliteRegistration',
+        name: 'eliteRegistration',
         component: () => import('../views/home.vue'),
     },
 ]

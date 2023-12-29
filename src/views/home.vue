@@ -31,8 +31,8 @@
                                 v-model="ruleForm.sex"
                                 direction="horizontal"
                             >
-                                <van-radio name="male">男</van-radio>
-                                <van-radio name="female">女</van-radio>
+                                <van-radio name="1">男</van-radio>
+                                <van-radio name="2">女</van-radio>
                             </van-radio-group>
                         </template>
                     </van-field>
@@ -89,6 +89,7 @@
                         <van-date-picker
                             @confirm="onBirthdayConfirm"
                             @cancel="showPicker.birthday = false"
+                            :min-date="minDate"
                         />
                     </van-popup>
 
@@ -349,6 +350,8 @@
     import upLoadFile from '../axios/api'
 
     const img1 = getAssetsFile('logo.png')
+
+    const minDate = ref(new Date(1937, 1, 31))
 
     const timeItemData = [
         {
