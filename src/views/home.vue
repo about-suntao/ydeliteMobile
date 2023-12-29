@@ -444,7 +444,7 @@
     const mailValidator = (val) => {
         const reg_tel = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
         if (!reg_tel.test(val)) {
-            return '请正确填写您的手机号码！'
+            return '请正确填写您的邮箱！'
         }
     }
 
