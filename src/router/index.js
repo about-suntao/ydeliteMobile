@@ -12,6 +12,11 @@ const routes = [
         name: 'eliteRegistration',
         component: () => import('../views/home.vue'),
     },
+    {
+        path: '/success',
+        name: 'success',
+        component: () => import('../views/success.vue'),
+    },
 ]
 
 const router = createRouter({

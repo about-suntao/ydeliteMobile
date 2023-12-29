@@ -191,7 +191,7 @@
                             />
                         </template>
                     </van-field>
-                    <van-field name="uploader" label="身份证反面">
+                    <!-- <van-field name="uploader" label="身份证反面">
                         <template #input>
                             <van-uploader
                                 v-model="fileBackList"
@@ -199,7 +199,7 @@
                                 :after-read="upLoadBack"
                             />
                         </template>
-                    </van-field>
+                    </van-field> -->
 
                     <div class="btn">
                         <van-button
@@ -215,54 +215,74 @@
 
                 <van-form @submit="onSecondSubmit" v-if="activeState === 2">
                     <div
-                        v-for="(item, index) in ruleForm.contacts"
+                        v-for="(item, index) in ruleForm.contact"
                         :key="item.name"
                     >
                         <div class="smallTitle">
                             <p>联系人{{ index + 1 }}</p>
                         </div>
                         <van-field
-                            v-model="ruleForm.contacts[index].relation"
+                            v-model="ruleForm.contact[index].relation"
                             is-link
                             readonly
                             name="关系"
                             label="关系"
                             placeholder="关系"
-                            @click="OpenContactsPopup(index)"
-                            :rules="[{ required: true, message: '请选择关系' }]"
+                            @click="OpencontactPopup(index)"
+                            :rules="
+                                index === 0
+                                    ? [
+                                          {
+                                              required: true,
+                                              message: '请选择关系',
+                                          },
+                                      ]
+                                    : []
+                            "
                         />
                         <van-field
-                            v-model="ruleForm.contacts[index].name"
+                            v-model="ruleForm.contact[index].name"
                             name="名称"
                             label="名称"
                             placeholder="请输入联系人名称"
-                            :rules="[
-                                { required: true, message: '请输入联系人名称' },
-                            ]"
+                            :rules="
+                                index === 0
+                                    ? [
+                                          {
+                                              required: true,
+                                              message: '请输入联系人名称',
+                                          },
+                                      ]
+                                    : []
+                            "
                         />
                         <van-field
-                            v-model="ruleForm.contacts[index].phone"
+                            v-model="ruleForm.contact[index].phone"
                             name="手机号"
                             label="手机号"
                             type="number"
                             placeholder="请输入联系人手机号码"
-                            :rules="[
-                                {
-                                    required: true,
-                                    validator: phoneValidator,
-                                    message: '请输入联系人手机号码',
-                                },
-                            ]"
+                            :rules="
+                                index === 0
+                                    ? [
+                                          {
+                                              required: true,
+                                              validator: phoneValidator,
+                                              message: '请输入联系人手机号码',
+                                          },
+                                      ]
+                                    : ''
+                            "
                         />
                     </div>
                     <van-popup
-                        v-model:show="showPicker.contacts_relation"
+                        v-model:show="showPicker.contact_relation"
                         position="bottom"
                     >
                         <van-picker
-                            :columns="contacts_relationColumns"
-                            @confirm="onContactsConfirm"
-                            @cancel="showPicker.contacts_relation = false"
+                            :columns="contact_relationColumns"
+                            @confirm="oncontactConfirm"
+                            @cancel="showPicker.contact_relation = false"
                         />
                     </van-popup>
 
@@ -294,7 +314,7 @@
                         label="兴趣爱好"
                         type="textarea"
                         rows="5"
-                        placeholder="请输入"
+                        placeholder="阅读/运动/音乐/绘画/手工艺"
                         :rules="[{ required: true, message: '请输入兴趣爱好' }]"
                     />
                     <van-field
@@ -303,7 +323,7 @@
                         label="获奖情况"
                         type="textarea"
                         rows="5"
-                        placeholder="请输入"
+                        placeholder="××年国家/省级市级××奖项"
                         :rules="[{ required: true, message: '请输入获奖情况' }]"
                     />
                     <van-field
@@ -312,7 +332,7 @@
                         label="社会实践"
                         type="textarea"
                         rows="5"
-                        placeholder="请输入"
+                        placeholder="环保工作/志愿服务/调查活动"
                         :rules="[
                             { required: true, message: '请输入社会实践经历' },
                         ]"
@@ -345,9 +365,13 @@
 <script setup>
     import { ref, reactive } from 'vue'
     import getAssetsFile from '../util/getAssetsFile'
+    import { showNotify } from 'vant'
+    import { useRouter } from 'vue-router'
 
     import { submitForm } from './homeApi'
     import upLoadFile from '../axios/api'
+
+    const router = useRouter()
 
     const img1 = getAssetsFile('logo.png')
 
@@ -370,7 +394,7 @@
 
     const activeState = ref(1)
 
-    const contactsActive = ref(0)
+    const contactActive = ref(0)
 
     const fileFrontList = ref([])
     const fileBackList = ref([])
@@ -380,7 +404,7 @@
         sex: '',
         ID_Card: '',
         ID_frontSide: '',
-        ID_backSide: '',
+        // ID_backSide: '',
         phone: '',
         picture: '',
         e_mail: '',
@@ -391,7 +415,7 @@
         access: '',
         course: '',
         grade: '',
-        contacts: [
+        contact: [
             {
                 relation: '',
                 name: '',
@@ -420,14 +444,13 @@
 
     const accessColumns = [
         { text: '网络', value: 'Internet' },
-        { text: '培训机构', value: 'organization' },
-        { text: '远播教育', value: 'distance_education' },
-        { text: '同学或老师', value: 'classmateOrTeacher' },
-        { text: '亲戚或朋友', value: 'friendsOrRelatives' },
+        { text: '宣讲会/讲座', value: 'CareerTalk' },
+        { text: '教育择校展', value: 'selectSchool' },
+        { text: '熟人介绍', value: 'friend' },
         { text: '其他', value: 'other' },
     ]
 
-    const contacts_relationColumns = [
+    const contact_relationColumns = [
         { text: '父亲', value: 'father' },
         { text: '母亲', value: 'mother' },
         { text: '其他', value: 'other' },
@@ -453,7 +476,7 @@
         course: false,
         grade: false,
         access: false,
-        contacts_relation: false,
+        contact_relation: false,
     })
 
     const onBirthdayConfirm = ({ selectedValues }) => {
@@ -475,15 +498,15 @@
         showPicker.access = false
     }
 
-    const OpenContactsPopup = (index) => {
-        showPicker.contacts_relation = true
-        contactsActive.value = index
+    const OpencontactPopup = (index) => {
+        showPicker.contact_relation = true
+        contactActive.value = index
     }
 
-    const onContactsConfirm = ({ selectedOptions }) => {
-        ruleForm.contacts[contactsActive.value].relation =
+    const oncontactConfirm = ({ selectedOptions }) => {
+        ruleForm.contact[contactActive.value].relation =
             selectedOptions[0]?.text
-        showPicker.contacts_relation = false
+        showPicker.contact_relation = false
     }
 
     // 上传图片
@@ -540,11 +563,30 @@
     }
 
     const onSubmit = () => {
-        submitForm(ruleForm)
+        submitForm(ruleForm).then((res) => {
+            if (res.data.code === 200) {
+                router.push('/success')
+            } else {
+                showNotify({
+                    type: 'warning',
+                    color: 'white',
+                    style: ' background-color: #FF976A;text-align:center;font-size:16px;padding:10px 0',
+                    message: '信息提交错误，请重试!',
+                })
+            }
+        })
     }
 </script>
 
 <style scoped lang="scss">
+    .cc {
+        width: 100%;
+        height: 100%;
+        background-color: red;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
     .apply {
         .header {
             background-color: #fff;
