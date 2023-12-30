@@ -94,22 +94,6 @@
                     </van-popup>
 
                     <van-field
-                        v-model="ruleForm.domicile_addr"
-                        name="户籍地址"
-                        label="户籍地址"
-                        placeholder="户籍地址"
-                        :rules="[{ required: true, message: '请输入户籍地址' }]"
-                    />
-
-                    <van-field
-                        v-model="ruleForm.home_addr"
-                        name="家庭地址"
-                        label="家庭地址"
-                        placeholder="家庭地址"
-                        :rules="[{ required: true, message: '请输入家庭地址' }]"
-                    />
-
-                    <van-field
                         v-model="ruleForm.junior_high_school"
                         name="初中学校"
                         label="初中学校"
@@ -118,27 +102,6 @@
                             { required: true, message: '请输入初中就读学校' },
                         ]"
                     />
-
-                    <van-field
-                        v-model="ruleForm.course"
-                        is-link
-                        readonly
-                        name="课程"
-                        label="在读课程"
-                        placeholder="选择在读课程"
-                        @click="showPicker.course = true"
-                        :rules="[{ required: true, message: '请选择在读课程' }]"
-                    />
-                    <van-popup
-                        v-model:show="showPicker.course"
-                        position="bottom"
-                    >
-                        <van-picker
-                            :columns="courseColumns"
-                            @confirm="onCourseConfirm"
-                            @cancel="showPicker.course = false"
-                        />
-                    </van-popup>
 
                     <van-field
                         v-model="ruleForm.grade"
@@ -213,7 +176,7 @@
                     </div>
                 </van-form>
 
-                <van-form @submit="onSecondSubmit" v-if="activeState === 2">
+                <!-- <van-form @submit="onSecondSubmit" v-if="activeState === 2">
                     <div
                         v-for="(item, index) in ruleForm.contact"
                         :key="item.name"
@@ -305,9 +268,9 @@
                             下一步
                         </van-button>
                     </div>
-                </van-form>
+                </van-form> -->
 
-                <van-form @submit="onSubmit" v-if="activeState === 3">
+                <van-form @submit="onSubmit" v-if="activeState === 2">
                     <van-field
                         v-model="ruleForm.interest"
                         name="兴趣爱好"
@@ -343,7 +306,7 @@
                             block
                             type="primary"
                             native-type="submit"
-                            @click="activeState = 2"
+                            @click="activeState = 1"
                         >
                             上一步
                         </van-button>
@@ -409,11 +372,8 @@
         picture: '',
         e_mail: '',
         birthday: '',
-        domicile_addr: '',
-        home_addr: '',
         junior_high_school: '',
         access: '',
-        course: '',
         grade: '',
         contact: [
             {
@@ -431,11 +391,6 @@
         awards: '',
         practice: '',
     })
-
-    const courseColumns = [
-        { text: '国内课程', value: 'home' },
-        { text: '国外课程', value: 'abroad' },
-    ]
 
     const gradeColumns = [
         { text: '初二', value: 'second_grade' },
@@ -473,7 +428,6 @@
 
     const showPicker = reactive({
         birthday: false,
-        course: false,
         grade: false,
         access: false,
         contact_relation: false,
@@ -482,11 +436,6 @@
     const onBirthdayConfirm = ({ selectedValues }) => {
         ruleForm.birthday = selectedValues.join('/')
         showPicker.birthday = false
-    }
-
-    const onCourseConfirm = ({ selectedOptions }) => {
-        ruleForm.course = selectedOptions[0]?.text
-        showPicker.course = false
     }
 
     const onGradeConfirm = ({ selectedOptions }) => {
@@ -558,9 +507,9 @@
         activeState.value = 2
     }
 
-    const onSecondSubmit = () => {
-        activeState.value = 3
-    }
+    // const onSecondSubmit = () => {
+    //     activeState.value = 3
+    // }
 
     const onSubmit = () => {
         submitForm(ruleForm).then((res) => {
@@ -600,7 +549,7 @@
             border-bottom-left-radius: 10px;
 
             img {
-                width: 250px;
+                width: 300px;
                 height: auto;
             }
         }
