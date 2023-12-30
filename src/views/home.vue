@@ -52,7 +52,7 @@
                     />
 
                     <van-field
-                        v-model="ruleForm.e_mail"
+                        v-model="ruleForm.Email"
                         name="电子邮箱"
                         label="电子邮箱"
                         placeholder="请输入电子邮箱"
@@ -94,7 +94,7 @@
                     </van-popup>
 
                     <van-field
-                        v-model="ruleForm.junior_high_school"
+                        v-model="ruleForm.juniorHighSchool"
                         name="初中学校"
                         label="初中学校"
                         placeholder="初中学校"
@@ -145,7 +145,16 @@
                         />
                     </van-popup>
 
-                    <van-field name="uploader" label="身份证正面">
+                    <van-field 
+                        name="uploader" 
+                        label="身份证正面"
+                        :rules="[
+                            {
+                                required: true,
+                                message: '请上传身份证正面照片',
+                            },
+                        ]"
+                    >
                         <template #input>
                             <van-uploader
                                 v-model="fileFrontList"
@@ -154,15 +163,6 @@
                             />
                         </template>
                     </van-field>
-                    <!-- <van-field name="uploader" label="身份证反面">
-                        <template #input>
-                            <van-uploader
-                                v-model="fileBackList"
-                                :max-count="1"
-                                :after-read="upLoadBack"
-                            />
-                        </template>
-                    </van-field> -->
 
                     <div class="btn">
                         <van-button
@@ -175,100 +175,6 @@
                         </van-button>
                     </div>
                 </van-form>
-
-                <!-- <van-form @submit="onSecondSubmit" v-if="activeState === 2">
-                    <div
-                        v-for="(item, index) in ruleForm.contact"
-                        :key="item.name"
-                    >
-                        <div class="smallTitle">
-                            <p>联系人{{ index + 1 }}</p>
-                        </div>
-                        <van-field
-                            v-model="ruleForm.contact[index].relation"
-                            is-link
-                            readonly
-                            name="关系"
-                            label="关系"
-                            placeholder="关系"
-                            @click="OpencontactPopup(index)"
-                            :rules="
-                                index === 0
-                                    ? [
-                                          {
-                                              required: true,
-                                              message: '请选择关系',
-                                          },
-                                      ]
-                                    : []
-                            "
-                        />
-                        <van-field
-                            v-model="ruleForm.contact[index].name"
-                            name="名称"
-                            label="名称"
-                            placeholder="请输入联系人名称"
-                            :rules="
-                                index === 0
-                                    ? [
-                                          {
-                                              required: true,
-                                              message: '请输入联系人名称',
-                                          },
-                                      ]
-                                    : []
-                            "
-                        />
-                        <van-field
-                            v-model="ruleForm.contact[index].phone"
-                            name="手机号"
-                            label="手机号"
-                            type="number"
-                            placeholder="请输入联系人手机号码"
-                            :rules="
-                                index === 0
-                                    ? [
-                                          {
-                                              required: true,
-                                              validator: phoneValidator,
-                                              message: '请输入联系人手机号码',
-                                          },
-                                      ]
-                                    : ''
-                            "
-                        />
-                    </div>
-                    <van-popup
-                        v-model:show="showPicker.contact_relation"
-                        position="bottom"
-                    >
-                        <van-picker
-                            :columns="contact_relationColumns"
-                            @confirm="oncontactConfirm"
-                            @cancel="showPicker.contact_relation = false"
-                        />
-                    </van-popup>
-
-                    <div class="btn">
-                        <van-button
-                            round
-                            block
-                            type="primary"
-                            native-type="submit"
-                            @click="activeState = 1"
-                        >
-                            上一步
-                        </van-button>
-                        <van-button
-                            round
-                            block
-                            type="primary"
-                            native-type="submit"
-                        >
-                            下一步
-                        </van-button>
-                    </div>
-                </van-form> -->
 
                 <van-form @submit="onSubmit" v-if="activeState === 2">
                     <van-field
@@ -347,10 +253,6 @@
         },
         {
             id: 2,
-            title: '填写联系人信息',
-        },
-        {
-            id: 3,
             title: '自我评价',
         },
     ]
@@ -366,27 +268,13 @@
         name: '',
         sex: '',
         idCard: '',
-        idFrontside: '',
-        // ID_backSide: '',
+        idfrontSide: '',
         phone: '',
-        picture: '',
-        e_mail: '',
+        Email: '',
         birthday: '',
-        junior_high_school: '',
+        juniorHighSchool: '',
         access: '',
         grade: '',
-        contact: [
-            {
-                relation: '',
-                name: '',
-                phone: '',
-            },
-            {
-                relation: '',
-                name: '',
-                phone: '',
-            },
-        ],
         interest: '',
         awards: '',
         practice: '',
@@ -474,7 +362,7 @@
         postImg(formData, (res) => {
             if (res.data.code === 200) {
                 file.url = res.data.data.url
-                ruleForm.idFrontside = res.data.data.url
+                ruleForm.idfrontSide = res.data.data.url
                 file.status = 'done'
                 file.message = '上传成功'
             } else {
@@ -507,9 +395,6 @@
         activeState.value = 2
     }
 
-    // const onSecondSubmit = () => {
-    //     activeState.value = 3
-    // }
 
     const onSubmit = () => {
         submitForm(ruleForm).then((res) => {
