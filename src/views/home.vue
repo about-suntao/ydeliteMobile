@@ -151,6 +151,7 @@
                         :rules="[
                             {
                                 required: true,
+                                validator:photoValidator,
                                 message: '请上传身份证正面照片',
                             },
                         ]"
@@ -314,6 +315,13 @@
         }
     }
 
+    const photoValidator = (file) => {
+        if ( file[0].status != 'done') {
+            return '图片尚未上传成功'
+        }
+    }
+
+
     const showPicker = reactive({
         birthday: false,
         grade: false,
@@ -372,29 +380,9 @@
         })
     }
 
-    const upLoadBack = (file) => {
-        file.status = 'uploading'
-        file.message = '上传中'
-        let fileUrl = file.file
-        let formData = new FormData()
-        formData.append('file', fileUrl)
-        postImg(formData, (res) => {
-            if (res.data.code === 200) {
-                file.url = res.data.data.url
-                ruleForm.ID_backSide = res.data.data.url
-                file.status = 'done'
-                file.message = '上传成功'
-            } else {
-                file.status = 'failed'
-                file.message = '上传失败'
-            }
-        })
-    }
-
     const onFirstSubmit = () => {
         activeState.value = 2
     }
-
 
     const onSubmit = () => {
         submitForm(ruleForm).then((res) => {
