@@ -66,7 +66,7 @@
                     />
 
                     <van-field
-                        v-model="ruleForm.ID_Card"
+                        v-model="ruleForm.idCard"
                         name="证件号码"
                         label="证件号码"
                         placeholder="请输入证件号码"
@@ -365,8 +365,8 @@
     const ruleForm = reactive({
         name: '',
         sex: '',
-        ID_Card: '',
-        ID_frontSide: '',
+        idCard: '',
+        idFrontside: '',
         // ID_backSide: '',
         phone: '',
         picture: '',
@@ -474,7 +474,7 @@
         postImg(formData, (res) => {
             if (res.data.code === 200) {
                 file.url = res.data.data.url
-                ruleForm.ID_frontSide = res.data.data.url
+                ruleForm.idFrontside = res.data.data.url
                 file.status = 'done'
                 file.message = '上传成功'
             } else {
