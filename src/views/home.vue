@@ -52,7 +52,7 @@
                     />
 
                     <van-field
-                        v-model="ruleForm.Email"
+                        v-model="ruleForm.eMail"
                         name="电子邮箱"
                         label="电子邮箱"
                         placeholder="请输入电子邮箱"
@@ -145,13 +145,13 @@
                         />
                     </van-popup>
 
-                    <van-field 
-                        name="uploader" 
+                    <van-field
+                        name="uploader"
                         label="身份证正面"
                         :rules="[
                             {
                                 required: true,
-                                validator:photoValidator,
+                                validator: photoValidator,
                                 message: '请上传身份证正面照片',
                             },
                         ]"
@@ -271,7 +271,7 @@
         idCard: '',
         idfrontSide: '',
         phone: '',
-        Email: '',
+        eMail: '',
         birthday: '',
         juniorHighSchool: '',
         access: '',
@@ -316,11 +316,10 @@
     }
 
     const photoValidator = (file) => {
-        if ( file[0].status != 'done') {
+        if (file[0].status != 'done') {
             return '图片尚未上传成功'
         }
     }
-
 
     const showPicker = reactive({
         birthday: false,
