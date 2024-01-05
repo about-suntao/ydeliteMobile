@@ -52,7 +52,7 @@
                     />
 
                     <van-field
-                        v-model="ruleForm.eMail"
+                        v-model="ruleForm.email"
                         name="电子邮箱"
                         label="电子邮箱"
                         placeholder="请输入电子邮箱"
@@ -271,7 +271,7 @@
         idCard: '',
         idfrontSide: '',
         phone: '',
-        eMail: '',
+        email: '',
         birthday: '',
         juniorHighSchool: '',
         access: '',
