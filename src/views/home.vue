@@ -21,16 +21,9 @@
                         placeholder="姓名"
                         :rules="[{ required: true, message: '请输入姓名' }]"
                     />
-                    <van-field
-                        name="性别"
-                        label="性别"
-                        :rules="[{ required: true, message: '请选择性别' }]"
-                    >
+                    <van-field name="性别" label="性别" :rules="[{ required: true, message: '请选择性别' }]">
                         <template #input>
-                            <van-radio-group
-                                v-model="ruleForm.sex"
-                                direction="horizontal"
-                            >
+                            <van-radio-group v-model="ruleForm.sex" direction="horizontal">
                                 <van-radio name="1">男</van-radio>
                                 <van-radio name="2">女</van-radio>
                             </van-radio-group>
@@ -82,10 +75,7 @@
                         @click="showPicker.birthday = true"
                         :rules="[{ required: true, message: '请选择生日' }]"
                     />
-                    <van-popup
-                        v-model:show="showPicker.birthday"
-                        position="bottom"
-                    >
+                    <van-popup v-model:show="showPicker.birthday" position="bottom">
                         <van-date-picker
                             @confirm="onBirthdayConfirm"
                             @cancel="showPicker.birthday = false"
@@ -98,9 +88,7 @@
                         name="初中学校"
                         label="初中学校"
                         placeholder="初中学校"
-                        :rules="[
-                            { required: true, message: '请输入初中就读学校' },
-                        ]"
+                        :rules="[{ required: true, message: '请输入初中就读学校' }]"
                     />
 
                     <van-field
@@ -113,10 +101,7 @@
                         @click="showPicker.grade = true"
                         :rules="[{ required: true, message: '请选择年级' }]"
                     />
-                    <van-popup
-                        v-model:show="showPicker.grade"
-                        position="bottom"
-                    >
+                    <van-popup v-model:show="showPicker.grade" position="bottom">
                         <van-picker
                             :columns="gradeColumns"
                             @confirm="onGradeConfirm"
@@ -134,10 +119,7 @@
                         @click="showPicker.access = true"
                         :rules="[{ required: true, message: '请选择获取途径' }]"
                     />
-                    <van-popup
-                        v-model:show="showPicker.access"
-                        position="bottom"
-                    >
+                    <van-popup v-model:show="showPicker.access" position="bottom">
                         <van-picker
                             :columns="accessColumns"
                             @confirm="onAccessConfirm"
@@ -145,7 +127,7 @@
                         />
                     </van-popup>
 
-                    <van-field
+                    <!-- <van-field
                         name="uploader"
                         label="身份证正面"
                         :rules="[
@@ -163,17 +145,10 @@
                                 :after-read="upLoadFront"
                             />
                         </template>
-                    </van-field>
+                    </van-field> -->
 
                     <div class="btn">
-                        <van-button
-                            round
-                            block
-                            type="primary"
-                            native-type="submit"
-                        >
-                            下一步
-                        </van-button>
+                        <van-button round block type="primary" native-type="submit"> 下一步 </van-button>
                     </div>
                 </van-form>
 
@@ -203,28 +178,13 @@
                         type="textarea"
                         rows="5"
                         placeholder="环保工作/志愿服务/调查活动"
-                        :rules="[
-                            { required: true, message: '请输入社会实践经历' },
-                        ]"
+                        :rules="[{ required: true, message: '请输入社会实践经历' }]"
                     />
                     <div class="btn">
-                        <van-button
-                            round
-                            block
-                            type="primary"
-                            native-type="submit"
-                            @click="activeState = 1"
-                        >
+                        <van-button round block type="primary" native-type="submit" @click="activeState = 1">
                             上一步
                         </van-button>
-                        <van-button
-                            round
-                            block
-                            type="primary"
-                            native-type="submit"
-                        >
-                            提交
-                        </van-button>
+                        <van-button round block type="primary" native-type="submit"> 提交 </van-button>
                     </div>
                 </van-form>
             </div>
@@ -301,8 +261,7 @@
     ]
 
     const phoneValidator = (val) => {
-        const reg_tel =
-            /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/
+        const reg_tel = /^(13[0-9]|14[01456879]|15[0-35-9]|16[2567]|17[0-8]|18[0-9]|19[0-35-9])\d{8}$/
         if (!reg_tel.test(val)) {
             return '请正确填写您的手机号码！'
         }
@@ -348,8 +307,7 @@
     }
 
     const oncontactConfirm = ({ selectedOptions }) => {
-        ruleForm.contact[contactActive.value].relation =
-            selectedOptions[0]?.text
+        ruleForm.contact[contactActive.value].relation = selectedOptions[0]?.text
         showPicker.contact_relation = false
     }
 
